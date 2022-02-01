@@ -6,11 +6,11 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/01/31 13:53:57 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/01 12:00:36 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex.h"
 
 char	**get_paths(char **envp)
 {
@@ -20,7 +20,7 @@ char	**get_paths(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], "PATT=", 5) == 0)
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 			break;
 		i++;
 	}

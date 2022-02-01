@@ -6,59 +6,81 @@
 #    By: bterral <bterral@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 10:52:39 by bterral           #+#    #+#              #
-#    Updated: 2022/01/31 13:58:39 by bterral          ###   ########.fr        #
+#    Updated: 2022/02/01 14:18:47 by bterral          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
+NAME 				:= pipex
 
-SRCS_FILES = pipex.c error.c children_processes.c
+### FILES ###
 
-SRCS_FOLDER = ./srcs/
+SRCS_FILES			:= pipex.c error.c children_processes.c
 
-SRCS = $(addprefix ${SRCS_FOLDER},${SRCS_FILES})
+SRCS_DIR			:= ./srcs/
 
-OBJS = ${SRCS:.c=.o}
+SRCS 				:= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-SRCS_FILES_LIBFT = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
-		ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_memchr.c \
-		ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c ft_putchar_fd.c \
-		ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c \
-		ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c \
-		ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c \
-		ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c
+OBJS_DIR			:= ./.objs/
 
-SRCS_FOLDER_LIBFT = ./libft/
+LST_OBJS			:= $(SRCS_FILES:.c=.o)
 
-SRCS_LIBFT = $(addprefix ${SRCS_FOLDER_LIBFT},${SRCS_FILES_LIBFT})
+OBJS 				:= $(addprefix $(OBJS_DIR), $(LST_OBJS))
 
-OBJS_LIBFT = ${SRCS_LIBFT:.c=.o}
+INCLUDES			:= ./includes/
 
-CC = gcc
+### LIB ###
 
-CFLAGS = -Wall -Wextra -Werror
+LIBFT_DIR 			:= ./libft
 
-RM = rm -f
+LIBFT_LIB 			:= ./libft/libft.a
 
-INCLUDES = ./includes/ft_printf.h ./libft/libft.h
+SRCS_FILES_LIBFT	:= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
+						ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_memchr.c \
+						ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c ft_putchar_fd.c \
+						ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c \
+						ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c \
+						ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c \
+						ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c
 
-all: ${NAME}
+SRCS_DIR_LIBFT 		:= ./libft/
 
-%.o: %.c ${INCLUDES}
-	${CC} ${CFLAGS} -c -o $@ $<
+SRCS_LIBFT			:= $(addprefix ${SRCS_DIR_LIBFT},${SRCS_FILES_LIBFT})
 
-${NAME}: ${OBJS} ${OBJS_LIBFT}
-	$(MAKE) -C ./libft
-	cp ./libft/libft.a ${NAME}
+OBJS_LIBFT			:= ${SRCS_LIBFT:.c=.o}
+
+INCLUDES_LIBFT		:= ./libft/libft.h
+
+### COMMANDS ###
+
+CC					:= gcc
+
+CFLAGS				:= -Wall -Wextra -Werror
+
+RM					:= rm -f
+
+.PHONY: all clean fclean re
+
+all: $(NAME)
+
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(INCLUDES) Makefile | $(OBJS_DIR)
+	$(CC) $(CFLAGS) -I $(INCLUDES) -I $(LIBFT_DIR) -c $< -o $@
+
+$(LIBFT_LIB): $(OBJS_LIBFT) $(INCLUDES_LIBFT)
+	$(MAKE) -C $(LIBFT_DIR)
+
+$(NAME): $(OBJS) $(LIBFT_LIB)
+#	$(CC) $(CFLAGS) -I $(INCLUDES) $(OBJS) $(LIBFT_LIB) -o $(NAME)
+	$(CC) $(CFLAGS) $^ -o $(NAME)
+
+$(OBJS_DIR):
+	mkdir -p $(OBJS_DIR)
 
 clean:
-	${RM} ${OBJS}
+	$(RM) $(OBJS)
 	$(MAKE) clean -C ./libft
 
 fclean: clean
-	${RM} ${NAME}
+	$(RM) $(NAME)
 	$(MAKE) fclean -C ./libft
 
 re: fclean all
-
-.PHONY: all bonus clean fclean re
