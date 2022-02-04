@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/01 13:59:23 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/04 12:53:45 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,16 @@ void	execute_second_command(t_pipex *pipex, char **argv, char **envp)
 		perror_exit(PID_ERROR);
 	if (pipex->pid2 == 0)
 	{
-		close(pipex->fd[1]);
-		dup2(pipex->fd[0], STDIN_FILENO);
-		dup2(pipex->outfile, 1);
+		if (close(pipex->fd[1]) == -1)
+			perror_exit(CLOSE_FAILED);
+		if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
+			perror_exit(DUP_FAILED);
+		if (dup2(pipex->outfile, 1) == -1)
+			perror_exit(DUP_FAILED);
 		pipex->cmd_args = ft_split(argv[3], ' ');
 		pipex->cmd = get_cmd(pipex);
-		execve(pipex->cmd, pipex->cmd_args, envp);
+		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
+			perror_exit(EXECVE_FAILED);
 	}
 }
 
@@ -59,12 +63,16 @@ void	execute_commands(t_pipex *pipex, char **argv, char **envp)
 		perror_exit(PID_ERROR);
 	if (pipex->pid1 == 0)
 	{
-		dup2(pipex->fd[1], STDOUT_FILENO);
-		close(pipex->fd[0]);
-		dup2(pipex->infile, STDIN_FILENO);
+		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+			perror_exit(DUP_FAILED);
+		if (close(pipex->fd[0]) == -1)
+			perror_exit(CLOSE_FAILED);
+		if (dup2(pipex->infile, STDIN_FILENO) == -1)
+			perror_exit(DUP_FAILED);
 		pipex->cmd_args = ft_split(argv[2], ' ');
 		pipex->cmd = get_cmd(pipex);
-		execve(pipex->cmd, pipex->cmd_args, envp);
+		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
+			perror_exit(EXECVE_FAILED);
 	}
 	execute_second_command(pipex, argv, envp);
 }

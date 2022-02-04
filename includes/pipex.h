@@ -2,7 +2,7 @@
 # define PIPEX_H
 
 /*ft_strlen*/
-# include "libft/libft.h"
+# include "libft.h"
 
 /*perror*/
 # include <stdio.h>
@@ -21,12 +21,15 @@
 # define CMD_ERROR "Command not found"
 # define PID_ERROR "Fail to create process"
 # define FAIL_PATHS "Could not retrieve the PATH variable correctly"
+# define WAITPID_FAILED "Waiting for child(ren) processes(es) failed"
+# define CLOSE_FAILED "Program failed to close a file descriptor"
+# define DUP_FAILED "DUP function failed"
+# define EXECVE_FAILED "command execution failed"
 
 typedef struct s_pipex
 {
 	int		infile;
 	int		outfile;
-	int		channel;
 	int		fd[2];
 	char	**paths;
 	pid_t	pid1;

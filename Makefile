@@ -6,7 +6,7 @@
 #    By: bterral <bterral@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 10:52:39 by bterral           #+#    #+#              #
-#    Updated: 2022/02/01 14:18:47 by bterral          ###   ########.fr        #
+#    Updated: 2022/02/04 12:39:54 by bterral          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ LST_OBJS			:= $(SRCS_FILES:.c=.o)
 
 OBJS 				:= $(addprefix $(OBJS_DIR), $(LST_OBJS))
 
-INCLUDES			:= ./includes/
+INCLUDES_DIR		:= ./includes/
+
+INCLUDES			:= ./includes/pipex.h
 
 ### LIB ###
 
@@ -56,20 +58,19 @@ CC					:= gcc
 
 CFLAGS				:= -Wall -Wextra -Werror
 
-RM					:= rm -f
+RM					:= rm -rf
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(INCLUDES) Makefile | $(OBJS_DIR)
-	$(CC) $(CFLAGS) -I $(INCLUDES) -I $(LIBFT_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -c $< -o $@
 
 $(LIBFT_LIB): $(OBJS_LIBFT) $(INCLUDES_LIBFT)
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) $(LIBFT_LIB)
-#	$(CC) $(CFLAGS) -I $(INCLUDES) $(OBJS) $(LIBFT_LIB) -o $(NAME)
 	$(CC) $(CFLAGS) $^ -o $(NAME)
 
 $(OBJS_DIR):
