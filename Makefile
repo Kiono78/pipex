@@ -6,68 +6,83 @@
 #    By: bterral <bterral@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 10:52:39 by bterral           #+#    #+#              #
-#    Updated: 2022/02/10 11:58:27 by bterral          ###   ########.fr        #
+#    Updated: 2022/02/10 13:28:17 by bterral          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 				:= pipex
+NAME			= pipex
 
-### FILES ###
+NAME_BONUS		= pipex_bonus
 
-SRCS_FILES			:= pipex.c error.c children_processes.c
+LIBFT			= libft/libft.a
 
-OBJS_DIR			:= objs/
+SRCS			= pipex.c	children_processes.c	error.c
 
-OBJS 				:= $(addprefix $(OBJS_DIR), $(SRCS_FILES:.c=.o))
+SRCS_BONUS		= pipex_bonus.c	children_processes_bonus.c	error_bonus.c
 
-SRCS_DIR			:= srcs/
+OBJS			= ${addprefix ${OBJD},${SRCS:.c=.o}}
 
-SRCS				:= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
+OBJS_BONUS		= ${addprefix ${OBJD_BONUS},${SRCS_BONUS:.c=.o}}
 
-### INCLUDES ###
+SRCD			= srcs/
 
-INCLUDES			:= ./includes/pipex.h
+SRCD_BONUS		= srcs_bonus/
 
-INCLUDES_DIR		:= ./includes
+OBJD			= .obj/
 
-INCLUDES_LIB		:= ./libft/libft.h
+OBJD_BONUS		= .obj_bonus/
 
-### LIB ###
+INCLUDES		= includes/pipex.h
 
-LIBFT_DIR			:= ./libft
+INCLUDES_BONUS	= includes_bonus/pipex_bonus.h
 
-LIBFT_LIB 			:= ./libft/libft.a
+INCLUDESD		= includes/
 
-### COMMANDS ###
+INCLUDESD_BONUS	= includes_bonus/
 
-CC					:= gcc
+INCLUDES_LIBFT	= libft/libft.h
 
-CFLAGS				:= -Wall -Wextra -Werror
+INCLUDES_LIBFTD	= libft
 
-RM					:= rm -rf
+CC				= gcc
 
-all: $(LIBFT_LIB) $(NAME)
+CFLAGS			= -Wall -Wextra -Werror
 
-$(NAME): $(OBJS) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) -I includes $^ -o $@
+all: $(LIBFT) ${NAME}
 
-$(OBJS): $(SRCS) $(INCLUDES) $(INCLUDES_LIB) | $(OBJS_DIR)
-	$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I $(INCLUDES_DIR) -c $< -o $@ 
+bonus: ${NAME_BONUS}
 
-$(OBJS_DIR):
-	mkdir -p $(OBJS_DIR)
+${NAME}: ${OBJS} ${LIBFT}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
 
-$(LIBFT_LIB):
-	$(MAKE) -C $(LIBFT_DIR)
+${OBJD}%.o: ${SRCD}%.c ${INCLUDES} ${INCLUDES_LIBFT} | ${OBJD}
+	${CC} ${CFLAGS} -I $(INCLUDESD) -I ${INCLUDES_LIBFTD} -c $< -o $@ 
 
+${NAME_BONUS}: ${OBJS_BONUS} ${LIBFT}
+	${CC} ${CFLAGS} ${OBJS_BONUS} ${LIBFT} -o ${NAME_BONUS}
+
+${OBJD_BONUS}%.o: ${SRCD_BONUS}%.c ${INCLUDES_BONUS} ${INCLUDES_LIBFT} | ${OBJD_BONUS}
+	${CC} ${CFLAGS} -I ${INCLUDESD_BONUS} -I ${INCLUDES_LIBFTD} -c $< -o $@
+
+${OBJD}:
+	mkdir -p $@
+
+${OBJD_BONUS}:
+	mkdir -p $@
+
+$(LIBFT):
+	$(MAKE) -C libft/
+    
 clean:
-	$(RM) $(OBJS_DIR)
-	$(MAKE) clean -C ./libft
+	rm -rf ${OBJD}
+	rm -rf ${OBJD_BONUS}
+	$(MAKE) clean -C libft/
 
 fclean: clean
-	$(RM) $(NAME)
-	$(MAKE) fclean -C ./libft
+	rm -f ${NAME}
+	rm -f ${NAME_BONUS}
+	$(MAKE) fclean -C libft/
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all lib clean fclean re

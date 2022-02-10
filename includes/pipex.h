@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
+/*   Updated: 2022/02/10 13:45:04 by bterral          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PIPEX_H
 # define PIPEX_H
 
@@ -8,7 +20,7 @@
 # include <stdio.h>
 
 /*open*/
-#include <fcntl.h>
+# include <fcntl.h>
 
 /*exit*/
 # include <stdlib.h>
@@ -38,14 +50,18 @@ typedef struct s_pipex
 	char	*cmd;
 }	t_pipex;
 
+/*files and paths*/
+char	**get_paths(char **envp);
+int		open_file(char *file_name, int rights);
+void	free_paths(char **strings);
+
 /*Error functions*/
 int		return_error(char *err_msg);
 void	perror_exit(char *error_msg);
 
 /*children processes*/
-char	**get_paths(char **envp);
 char	*get_cmd(t_pipex	*pipex);
-void	execute_second_command(t_pipex *pipex, char **argv, char **envp);
-void	execute_commands(t_pipex *pipex, char **argv, char **envp);
+void	execute_second_command(t_pipex *pipex, char **argv, int argc, char **envp);
+void	execute_commands(t_pipex *pipex, char **argv, int argc, char **envp);
 
 #endif

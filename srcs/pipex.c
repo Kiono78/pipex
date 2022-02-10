@@ -6,11 +6,24 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/04 12:52:43 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/10 13:51:37 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+void	free_paths(char **strings)
+{
+	int i;
+	
+	i = 0;
+	while (strings[i])
+	{
+		free(strings[i]);
+		i++;
+	}
+	free(strings);
+}
 
 char	**get_paths(char **envp)
 {
@@ -21,7 +34,7 @@ char	**get_paths(char **envp)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break;
+			break ;
 		i++;
 	}
 	if (envp[i])
@@ -41,20 +54,20 @@ int	open_file(char *file_name, int rights)
 	return (fd);
 }
 
-int main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipex	pipex;
 
 	if (argc != 5)
 		return (return_error(ARG_ERROR));
 	pipex.infile = open_file(argv[1], O_RDONLY);
-	pipex.outfile = open_file(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR);
+	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipe(pipex.fd) == -1)
 		return (return_error(PIPE_ERROR));
 	pipex.paths = get_paths(envp);
 	if (pipex.paths == NULL)
 		return (return_error(FAIL_PATHS));
-	execute_commands(&pipex, argv, envp);
+	execute_commands(&pipex, argv, argc, envp);
 	if (close(pipex.fd[0]) == -1)
 		perror_exit(CLOSE_FAILED);
 	if (close(pipex.fd[1]) == -1)
@@ -63,5 +76,7 @@ int main(int argc, char *argv[], char *envp[])
 		perror_exit(WAITPID_FAILED);
 	if (waitpid(pipex.pid2, NULL, 0) == -1)
 		perror_exit(WAITPID_FAILED);
+	free_paths(pipex.paths);
+	sleep(60);
 	return (0);
 }

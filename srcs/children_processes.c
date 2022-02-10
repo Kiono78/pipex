@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/04 12:53:45 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/10 13:49:54 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ char	*get_cmd(t_pipex	*pipex)
 	int		i;
 
 	i = 0;
-	while(pipex->paths[i])
+	while (pipex->paths[i])
 	{
 		tmp = ft_strjoin(pipex->paths[i], "/");
-		//leaks below
 		cmd_path = ft_strjoin(tmp, pipex->cmd_args[0]);
 		free(tmp);
 		path_bool = access(cmd_path, X_OK);
@@ -36,7 +35,7 @@ char	*get_cmd(t_pipex	*pipex)
 	return (cmd_path);
 }
 
-void	execute_second_command(t_pipex *pipex, char **argv, char **envp)
+void	execute_second_command(t_pipex *pipex, char **argv, int argc, char **envp)
 {
 	pipex->pid2 = fork();
 	if (pipex->pid2 == -1)
@@ -51,12 +50,14 @@ void	execute_second_command(t_pipex *pipex, char **argv, char **envp)
 			perror_exit(DUP_FAILED);
 		pipex->cmd_args = ft_split(argv[3], ' ');
 		pipex->cmd = get_cmd(pipex);
+		if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC) == -1)
+		pipex->outfile = open_file(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR);
 		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
 			perror_exit(EXECVE_FAILED);
 	}
 }
 
-void	execute_commands(t_pipex *pipex, char **argv, char **envp)
+void	execute_commands(t_pipex *pipex, char **argv, int argc, char **envp)
 {
 	pipex->pid1 = fork();
 	if (pipex->pid1 == -1)
@@ -74,5 +75,5 @@ void	execute_commands(t_pipex *pipex, char **argv, char **envp)
 		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
 			perror_exit(EXECVE_FAILED);
 	}
-	execute_second_command(pipex, argv, envp);
+	execute_second_command(pipex, argv, argc, envp);
 }
