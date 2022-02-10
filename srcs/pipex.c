@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/10 13:51:37 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/10 16:08:00 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_paths(char **strings)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (strings[i])
 	{
@@ -77,6 +77,5 @@ int	main(int argc, char *argv[], char *envp[])
 	if (waitpid(pipex.pid2, NULL, 0) == -1)
 		perror_exit(WAITPID_FAILED);
 	free_paths(pipex.paths);
-	sleep(60);
 	return (0);
 }
