@@ -6,7 +6,7 @@
 #    By: bterral <bterral@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 10:52:39 by bterral           #+#    #+#              #
-#    Updated: 2022/02/10 10:55:53 by bterral          ###   ########.fr        #
+#    Updated: 2022/02/10 11:58:27 by bterral          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,19 @@ NAME 				:= pipex
 
 SRCS_FILES			:= pipex.c error.c children_processes.c
 
+OBJS_DIR			:= objs/
+
 OBJS 				:= $(addprefix $(OBJS_DIR), $(SRCS_FILES:.c=.o))
 
 SRCS_DIR			:= srcs/
 
-OBJS_DIR			:= objs/
+SRCS				:= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 ### INCLUDES ###
 
 INCLUDES			:= ./includes/pipex.h
+
+INCLUDES_DIR		:= ./includes
 
 INCLUDES_LIB		:= ./libft/libft.h
 
@@ -42,15 +46,13 @@ CFLAGS				:= -Wall -Wextra -Werror
 
 RM					:= rm -rf
 
-.PHONY: all clean fclean re
-
-all: $(OBJS) #$(LIBFT_LIB) $(NAME) 
+all: $(LIBFT_LIB) $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) ${OBJS} ${LIBFT_LIB} -o $(NAME)
+	$(CC) $(CFLAGS) -I includes $^ -o $@
 
-${OBJS_DIR}%.o: .c $(INCLUDES) $(INCLUDES_LIB) | $(OBJS_DIR)
-	$(CC) $(CFLAGS) -c -o $@ $<
+$(OBJS): $(SRCS) $(INCLUDES) $(INCLUDES_LIB) | $(OBJS_DIR)
+	$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I $(INCLUDES_DIR) -c $< -o $@ 
 
 $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
@@ -67,3 +69,5 @@ fclean: clean
 	$(MAKE) fclean -C ./libft
 
 re: fclean all
+
+.PHONY: all clean fclean re
