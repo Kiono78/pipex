@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 15:50:25 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 17:09:15 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*get_cmd(t_pipex	*pipex)
 	int		path_bool;
 	int		i;
 
+	if (access(pipex->cmd_args[0], X_OK) == 0)
+		return (pipex->cmd_args[0]);
 	i = 0;
 	while (pipex->paths[i])
 	{
