@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 16:34:44 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:55:34 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_pipex	pipex;
 	int		argv_count;
 
-	if (!argv[1])
-		return (return_error("No Argument found!"));
-	heredoc_infile(&pipex, argv, argc);
-	if (argc < (5 + pipex.here_doc))
-		return (return_error(ARG_ERROR));
+	if (argument_error(argc, argv, &pipex))
+		return (return_error("Arguments provided are not valid!"));
 	pipex.paths = get_paths(envp);
 	if (pipex.paths == NULL)
 		return (return_error(FAIL_PATHS));
