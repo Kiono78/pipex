@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 16:51:50 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 17:02:44 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	heredoc_infile(t_pipex *pipex, char *argv[], int argc);
 /*Error functions*/
 int		return_error(char *err_msg);
 void	perror_exit(char *error_msg);
-int	argument_error(int argc, char *argv[], t_pipex *pipex);
+int		argument_error(int argc, char *argv[], t_pipex *pipex);
 
 /*children processes*/
 char	*get_cmd(t_pipex	*pipex);
