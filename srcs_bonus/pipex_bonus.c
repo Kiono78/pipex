@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 15:59:22 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:25:19 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,17 @@ char	**get_paths(char **envp)
 int	get_here_doc(t_pipex *pipex, char *argv[])
 {
 	char	*line;
+	int		len;
 
 	if (pipe(pipex->fd) == -1)
 		perror_exit(PIPE_ERROR);
 	line = NULL;
+	len = ft_strlen(argv[2]);
 	while (1)
 	{
 		ft_putstr_fd("pipex heredoc> ", 1);
 		line = get_next_line(STDIN_FILENO);
-		if (!ft_strncmp(line, argv[2], ft_strlen(argv[2])))
+		if (!ft_strncmp(line, argv[2], len) && line[len] == '\n')
 			break ;
 		if (write(pipex->fd[1], line, ft_strlen(line)) == -1)
 			perror_exit(WRITE_ERROR);
@@ -86,7 +88,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_pipex	pipex;
 	int		argv_count;
 
-	heredoc_infile(&pipex, argv, argc);	
+	heredoc_infile(&pipex, argv, argc);
 	if (argc < (5 + pipex.here_doc))
 		return (return_error(ARG_ERROR));
 	pipex.paths = get_paths(envp);
