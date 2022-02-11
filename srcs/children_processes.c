@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/10 13:49:54 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 15:49:46 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*get_cmd(t_pipex	*pipex)
 	int		path_bool;
 	int		i;
 
+	if (access(pipex->cmd_args[0], X_OK) == 0)
+		return (pipex->cmd_args[0]);
 	i = 0;
 	while (pipex->paths[i])
 	{
@@ -28,6 +30,8 @@ char	*get_cmd(t_pipex	*pipex)
 		path_bool = access(cmd_path, X_OK);
 		if (path_bool == 0)
 			return (cmd_path);
+		else
+			free(cmd_path);
 		i++;
 	}
 	if (path_bool == -1)
@@ -35,7 +39,7 @@ char	*get_cmd(t_pipex	*pipex)
 	return (cmd_path);
 }
 
-void	execute_second_command(t_pipex *pipex, char **argv, int argc, char **envp)
+void	execute_second_cmd(t_pipex *pipex, char **argv, int argc, char **envp)
 {
 	pipex->pid2 = fork();
 	if (pipex->pid2 == -1)
@@ -51,7 +55,8 @@ void	execute_second_command(t_pipex *pipex, char **argv, int argc, char **envp)
 		pipex->cmd_args = ft_split(argv[3], ' ');
 		pipex->cmd = get_cmd(pipex);
 		if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC) == -1)
-		pipex->outfile = open_file(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR);
+			pipex->outfile
+				= open_file(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR);
 		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
 			perror_exit(EXECVE_FAILED);
 	}
@@ -75,5 +80,5 @@ void	execute_commands(t_pipex *pipex, char **argv, int argc, char **envp)
 		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
 			perror_exit(EXECVE_FAILED);
 	}
-	execute_second_command(pipex, argv, argc, envp);
+	execute_second_cmd(pipex, argv, argc, envp);
 }

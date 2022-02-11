@@ -6,12 +6,12 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/09 16:19:40 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 15:59:50 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 /*ft_strlen*/
 # include "libft.h"
@@ -28,7 +28,7 @@
 /*write*/
 # include <unistd.h>
 
-# define ARG_ERROR "Expected format error is: ./pipex file1 cmd1 cmd2 file2"
+# define ARG_ERROR "Missing arguments !"
 # define PIPE_ERROR "Pipe creation failed"
 # define CMD_ERROR "Command not found"
 # define PID_ERROR "Fail to create process"
@@ -38,7 +38,7 @@
 # define DUP_FAILED "DUP function failed"
 # define EXECVE_FAILED "command execution failed"
 # define INFILE_READ_FAILED "An error occured while reading the infile"
-# define WRITE_ERROR "An error occured while retrieving/writing data from input/to STDOUT"
+# define WRITE_ERROR "ERROR while retrieving/writing data from input/to STDOUT"
 
 typedef struct s_pipex
 {
@@ -58,6 +58,7 @@ typedef struct s_pipex
 char	**get_paths(char **envp);
 int		open_file(char *file_name, int rights);
 void	free_paths(char **strings);
+void	heredoc_infile(t_pipex *pipex, char *argv[], int argc);
 
 /*Error functions*/
 int		return_error(char *err_msg);
@@ -66,7 +67,8 @@ void	perror_exit(char *error_msg);
 /*children processes*/
 char	*get_cmd(t_pipex	*pipex);
 int		read_input(t_pipex *pipex);
-int		execute_command(t_pipex *pipex, char **argv, char **envp, int argv_count);
+int		execute_cmd(t_pipex *pipex, char **argv, char **envp, int argv_count);
 void	write_output(t_pipex *pipex);
+void	open_outfile(t_pipex *pipex, char **argv, int argv_count);
 
 #endif

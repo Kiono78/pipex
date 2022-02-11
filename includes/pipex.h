@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/10 13:45:04 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/10 13:57:24 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	perror_exit(char *error_msg);
 
 /*children processes*/
 char	*get_cmd(t_pipex	*pipex);
-void	execute_second_command(t_pipex *pipex, char **argv, int argc, char **envp);
+void	execute_second_cmd(t_pipex *pipex, char **argv, int argc, char **envp);
 void	execute_commands(t_pipex *pipex, char **argv, int argc, char **envp);
 
 #endif

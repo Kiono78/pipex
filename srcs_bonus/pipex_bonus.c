@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/09 16:40:15 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/11 15:59:22 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_paths(char **strings)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (strings[i])
 	{
@@ -44,20 +44,10 @@ char	**get_paths(char **envp)
 	return (output);
 }
 
-int	open_file(char *file_name, int rights)
-{
-	int	fd;
-
-	fd = open(file_name, rights, 0644);
-	if (fd < 0)
-		perror_exit(file_name);
-	return (fd);
-}
-
 int	get_here_doc(t_pipex *pipex, char *argv[])
 {
 	char	*line;
-	
+
 	if (pipe(pipex->fd) == -1)
 		perror_exit(PIPE_ERROR);
 	line = NULL;
@@ -65,9 +55,8 @@ int	get_here_doc(t_pipex *pipex, char *argv[])
 	{
 		ft_putstr_fd("pipex heredoc> ", 1);
 		line = get_next_line(STDIN_FILENO);
-		//segfautl en dessous ??
 		if (!ft_strncmp(line, argv[2], ft_strlen(argv[2])))
-			break;
+			break ;
 		if (write(pipex->fd[1], line, ft_strlen(line)) == -1)
 			perror_exit(WRITE_ERROR);
 		free(line);
@@ -77,24 +66,29 @@ int	get_here_doc(t_pipex *pipex, char *argv[])
 	return (pipex->fd[0]);
 }
 
+void	heredoc_infile(t_pipex *pipex, char *argv[], int argc)
+{
+	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
+	{
+		pipex->infile = get_here_doc(pipex, argv);
+		pipex->here_doc = 1;
+	}
+	else
+	{
+		pipex->infile = open_file(argv[1], O_RDONLY);
+		pipex->here_doc = 0;
+	}
+	pipex->argc = argc;
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipex	pipex;
 	int		argv_count;
 
-	if (argc < 5)
+	heredoc_infile(&pipex, argv, argc);	
+	if (argc < (5 + pipex.here_doc))
 		return (return_error(ARG_ERROR));
-	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
-	{
-		pipex.infile = get_here_doc(&pipex,argv);
-		pipex.here_doc = 1;
-	}
-	else
-	{
-		pipex.infile = open_file(argv[1], O_RDONLY);
-		pipex.here_doc = 0;
-	}
-	pipex.argc = argc;
 	pipex.paths = get_paths(envp);
 	if (pipex.paths == NULL)
 		return (return_error(FAIL_PATHS));
@@ -102,7 +96,7 @@ int	main(int argc, char *argv[], char *envp[])
 	argv_count = 2 + pipex.here_doc;
 	while ((argv_count) < (argc - 1))
 	{
-		pipex.input = execute_command(&pipex, argv, envp, argv_count);
+		pipex.input = execute_cmd(&pipex, argv, envp, argv_count);
 		argv_count++;
 	}
 	while (argv_count > (2 + pipex.here_doc))
