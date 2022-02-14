@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/14 14:31:42 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 15:34:25 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	execute_second_cmd(t_pipex *pipex, char **argv, int argc, char **envp)
 		if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
 			perror_exit(DUP_FAILED);
 		if (dup2(pipex->outfile, 1) == -1)
-			perror_exit(DUP_FAILED);
+			perror(DUP_FAILED);
 		pipex->cmd_args = ft_split(argv[3], ' ');
 		if (!pipex->cmd_args)
 			perror_exit(CMD_FAILED);

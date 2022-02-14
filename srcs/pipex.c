@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/14 14:45:11 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 15:17:25 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,8 @@ int	main(int argc, char *argv[], char *envp[])
 	if (pipex.paths == NULL)
 		return (return_error(FAIL_PATHS));
 	execute_commands(&pipex, argv, argc, envp);
-	if (close(pipex.fd[0]) == -1)
-		perror_exit(CLOSE_FAILED);
-	if (close(pipex.fd[1]) == -1)
-		perror_exit(CLOSE_FAILED);
+	close(pipex.fd[0]);
+	close(pipex.fd[1]);
 	if (waitpid(pipex.pid1, NULL, 0) == -1)
 		perror_exit(WAITPID_FAILED);
 	if (waitpid(pipex.pid2, NULL, 0) == -1)
