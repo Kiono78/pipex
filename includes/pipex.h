@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/10 13:57:24 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 13:32:18 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define CLOSE_FAILED "Program failed to close a file descriptor"
 # define DUP_FAILED "DUP function failed"
 # define EXECVE_FAILED "command execution failed"
+# define WRITE_ERROR "ERROR while retrieving/writing data from input/to STDOUT"
+# define CMD_FAILED "Error while retrieving system commands"
 
 typedef struct s_pipex
 {

@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 17:02:44 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 14:34:09 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@
 
 # define ARG_ERROR "Arguments provided are not valid!"
 # define PIPE_ERROR "Pipe creation failed"
-# define CMD_ERROR "Command not found"
+# define CMD_ERROR "Warning : Command not found"
 # define PID_ERROR "Fail to create process"
 # define FAIL_PATHS "Could not retrieve the PATH variable correctly"
 # define WAITPID_FAILED "Waiting for child(ren) processes(es) failed"
 # define CLOSE_FAILED "Program failed to close a file descriptor"
 # define DUP_FAILED "DUP function failed"
-# define EXECVE_FAILED "command execution failed"
-# define INFILE_READ_FAILED "An error occured while reading the infile"
+# define EXECVE_FAILED "Command execution failed"
+# define INFILE_READ_FAILED "Warning:An issue occured while reading the infile"
 # define WRITE_ERROR "ERROR while retrieving/writing data from input/to STDOUT"
+# define CMD_FAILED "Error while retrieving system commands"
 
 typedef struct s_pipex
 {

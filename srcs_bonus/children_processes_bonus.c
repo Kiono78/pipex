@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 17:09:15 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 14:18:48 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,14 @@ int	read_input(t_pipex *pipex)
 	{
 		bytes_read = read(pipex->infile, buffer, 1);
 		if (bytes_read == -1)
-			perror_exit(INFILE_READ_FAILED);
+			ft_putendl_fd(INFILE_READ_FAILED, 1);
 		if (bytes_read == 1)
 		{
 			if (write(pipe_fd[1], buffer, 1) == -1)
 				perror_exit(WRITE_ERROR);
 		}
 	}
-	if (close(pipex->infile) == -1)
-		perror_exit(CLOSE_FAILED);
+	close(pipex->infile);
 	if (close(pipe_fd[1]) == -1)
 		perror_exit(CLOSE_FAILED);
 	return (pipe_fd[0]);

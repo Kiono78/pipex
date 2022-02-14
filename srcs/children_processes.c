@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/11 15:49:46 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 14:31:42 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	execute_second_cmd(t_pipex *pipex, char **argv, int argc, char **envp)
 		if (dup2(pipex->outfile, 1) == -1)
 			perror_exit(DUP_FAILED);
 		pipex->cmd_args = ft_split(argv[3], ' ');
+		if (!pipex->cmd_args)
+			perror_exit(CMD_FAILED);
 		pipex->cmd = get_cmd(pipex);
 		if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC) == -1)
 			pipex->outfile
@@ -76,7 +78,11 @@ void	execute_commands(t_pipex *pipex, char **argv, int argc, char **envp)
 		if (dup2(pipex->infile, STDIN_FILENO) == -1)
 			perror_exit(DUP_FAILED);
 		pipex->cmd_args = ft_split(argv[2], ' ');
+		if (!pipex->cmd_args)
+			perror_exit(CMD_FAILED);
 		pipex->cmd = get_cmd(pipex);
+		if (!pipex->cmd)
+			perror_exit(CMD_FAILED);
 		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
 			perror_exit(EXECVE_FAILED);
 	}
