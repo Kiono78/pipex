@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:59:01 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/14 14:07:57 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 14:45:58 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	open_file(char *file_name, int rights)
 {
 	int	fd;
 
-	if (access(file_name, 'F_OK') == -1)
+	if (access(file_name, F_OK) == -1)
 		ft_putendl_fd("Input file does not exists !", 1);
-	else if (access(file_name, 'R_OK') == -1)
+	else if (access(file_name, R_OK) == -1)
 		ft_putendl_fd("No permission to read the input file!", 1);
 	fd = open(file_name, rights, 0644);
 	return (fd);
