@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:58:08 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/14 14:34:09 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/14 15:52:42 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define ARG_ERROR "Arguments provided are not valid!"
 # define PIPE_ERROR "Pipe creation failed"
-# define CMD_ERROR "Warning : Command not found"
+# define CMD_ERROR "Warning : Command not found\n"
 # define PID_ERROR "Fail to create process"
 # define FAIL_PATHS "Could not retrieve the PATH variable correctly"
 # define WAITPID_FAILED "Waiting for child(ren) processes(es) failed"
