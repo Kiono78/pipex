@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:51 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/14 15:26:25 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/21 11:56:46 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	get_here_doc(t_pipex *pipex, char *argv[])
 	{
 		ft_putstr_fd("pipex heredoc> ", 1);
 		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break;
 		if (!ft_strncmp(line, argv[2], len) && line[len] == '\n')
 			break ;
 		if (write(pipex->fd[1], line, ft_strlen(line)) == -1)

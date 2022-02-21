@@ -6,7 +6,7 @@
 /*   By: bterral <bterral@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 13:06:58 by bterral           #+#    #+#             */
-/*   Updated: 2022/02/14 15:34:25 by bterral          ###   ########.fr       */
+/*   Updated: 2022/02/21 11:43:15 by bterral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void	execute_second_cmd(t_pipex *pipex, char **argv, int argc, char **envp)
 			perror_exit(CMD_FAILED);
 		pipex->cmd = get_cmd(pipex);
 		if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC) == -1)
-			pipex->outfile
-				= open_file(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR);
+			perror_exit("No permission to read the input file!");
 		if (execve(pipex->cmd, pipex->cmd_args, envp) == -1)
 			perror_exit(EXECVE_FAILED);
 	}
